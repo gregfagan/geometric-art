@@ -5,6 +5,6 @@ import ReactDOM from 'react-dom';
 import Triangles from './triangles';
 
 ReactDOM.render(
-  <Triangles sideLength={75} spacing={3}/>,
+  <Triangles sideLength={45} spacing={2}/>,
   document.getElementById('app')
 );

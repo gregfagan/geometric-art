@@ -6,8 +6,29 @@ import _range from 'lodash/range'
 class Triangles extends React.Component {
   render() {
     const { sideLength, spacing, windowWidth, windowHeight, ...rest } = this.props;
-    const hCount = 2 * windowWidth / (sideLength + spacing) + 1;
-    const vCount = windowHeight / (equilateralHeight(sideLength) + spacing) + 1;
+    const hCount = 2 * windowWidth / (sideLength + spacing) + 2;
+    const vCount = windowHeight / (equilateralHeight(sideLength) + spacing) + 2;
+    
+    // Still experimenting with this
+    const gradient2D = (x, y) => {
+      const xLerp = x / hCount;
+      const yLerp = y / vCount;
+      
+      const xLowHue = 200;
+      const xHighHue = 490;
+      
+      const yLowHue = 275;
+      const yHighHue = 375;
+      
+      const xHue = xLowHue + xLerp * (xHighHue - xLowHue);
+      const yHue = yLowHue + yLerp * (yHighHue - yLowHue);
+      
+      let hue = (xHue + yHue) / 2;
+      if (hue > 360) hue -= 360;
+      
+      return hue;// + (Math.random() - 0.5) * 15;
+    }
+    
     return (
       <div style={{width: '100vw', height: '100vh'}}>
         <svg width='100%' height='100%'>
@@ -18,7 +39,7 @@ class Triangles extends React.Component {
                 <EquilateralTriangle
                   sideLength={sideLength}
                   flip={(i % 2)}
-                  fill='#ccf'
+                  fill={`hsl(${gradient2D(i, j)}, 100%, 80%)`}
                   transform={`translate(
                     ${i * (sideLength/2 + spacing) + (j % 2) * (sideLength/2 + spacing)},
                     ${j * (equilateralHeight(sideLength) + spacing)}
