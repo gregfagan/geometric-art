@@ -4,19 +4,18 @@ export default function(xHueLow, xHueHigh, yHueLow, yHueHigh) {
   return function(x, y, t) {
     const cycleT = t / (1000 * 60); // cycle every 60 seconds
     
-    const cycleX = (x + cycleT) > 1 ?
-      (1 - (x + cycleT - 1)) :
-      (x + cycleT);
-      
-    const cycleY = (y + cycleT) > 1 ?
-      (1 - (y + cycleT - 1)) :
-      (y + cycleT);
-    
-    const xHue = xHueLow + cycleX * (xHueHigh - xHueLow);
-    const yHue = yHueLow + cycleY * (yHueHigh - yHueLow);
+    const xHue = pingPongLerp(xHueLow, xHueHigh, x + cycleT);
+    const yHue = pingPongLerp(yHueLow, yHueHigh, y + cycleT);
     
     const hue = (xHue + yHue) / 2;
 
     return hue;
   }
+}
+
+function pingPongLerp(min, max, t) {
+  t = t % 2;
+  if (t > 1) t = 2 - t;
+  
+  return min + t * (max - min);
 }
