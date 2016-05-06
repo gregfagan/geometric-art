@@ -9,7 +9,7 @@ export default function(xHueLow, xHueHigh, yHueLow, yHueHigh) {
     
     const hue = (xHue + yHue) / 2;
 
-    return hue;
+    return `hsl(${hue}, 100%, 80%)`;
   }
 }
 

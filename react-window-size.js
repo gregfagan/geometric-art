@@ -42,7 +42,11 @@
 
 import React from 'react';
 
-export default function WindowSize(collector) {
+function defaultCollector(width, height) {
+  return { width, height };
+}
+
+export default function WindowSize(collector=defaultCollector) {
   return function decorateComponent(DecoratedComponent) {
     const displayName =
       DecoratedComponent.displayName ||

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import WindowSize from './react-window-size';
 import _range from 'lodash/range'
 
-class Triangles extends React.Component {
+export default class Triangles extends React.Component {
   constructor() {
     super();
     this.state = { elapsedTime: 0 };
@@ -19,7 +19,7 @@ class Triangles extends React.Component {
       // if (elapsedTime - this.state.elapsedTime > 100) {
         this.setState({ elapsedTime });
       // }
-      requestAnimationFrame(this.step);
+      this.raf = requestAnimationFrame(this.step);
     };
     this.raf = requestAnimationFrame(this.step);
   }
@@ -29,10 +29,10 @@ class Triangles extends React.Component {
   }
   
   render() {
-    const { sideLength, spacing, color, windowWidth, windowHeight, ...rest } = this.props;
+    const { sideLength, spacing, color, width, height, ...rest } = this.props;
     const { elapsedTime } = this.state;
-    const hCount = 2 * windowWidth / (sideLength + spacing) + 2;
-    const vCount = windowHeight / (equilateralHeight(sideLength) + spacing) + 2;
+    const hCount = 2 * width / (sideLength + spacing) + 2;
+    const vCount = height / (equilateralHeight(sideLength) + spacing) + 2;
     
     return (
       <div style={{width: '100vw', height: '100vh'}}>
@@ -44,7 +44,7 @@ class Triangles extends React.Component {
                 <EquilateralTriangle
                   sideLength={sideLength}
                   flip={(i % 2)}
-                  fill={`hsl(${color(i/hCount, j/vCount, elapsedTime)}, 100%, 80%)`}
+                  fill={color(i/hCount, j/vCount, elapsedTime)}
                   transform={`translate(
                     ${i * (sideLength/2 + spacing) + (j % 2) * (sideLength/2 + spacing)},
                     ${j * (equilateralHeight(sideLength) + spacing)}
@@ -76,5 +76,3 @@ function EquilateralTriangle(props) {
     </g>
   );
 }
-
-export default WindowSize((width, height) => ({windowWidth: width, windowHeight: height}))(Triangles);
